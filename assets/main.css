@@ -1,5 +1,6 @@
 .Center-card{
-    background-color: bisque;
+    background-color: rgb(230, 126, 0);
     width: 400px;
     height: 200px;
+    position: absolute;
 }
