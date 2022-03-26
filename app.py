@@ -83,7 +83,12 @@ app.layout = html.Div(children=[
                 ]),
             
             
-            html.Button("check"),
+            html.Button(
+                id = 'check' ,
+                n_clicks=0,
+                children=[
+                    "check"
+                ]),
 
             html.Br(),
             html.Div(
@@ -145,9 +150,18 @@ def hash_2(msg,click,fun):
             return ''
 
 
-
-
-
+@app.callback(
+    Output(component_id='result',component_property='children'),
+    Input(component_id='hashed1',component_property='value'),
+    Input(component_id='message-digest',component_property='value'),
+    Input(component_id='check',component_property="value"),
+)
+def check(digest1,digest2,click):
+    if click != 0:
+        if digest1 == digest2 :
+            return 'cool'
+        else :
+            return 'not cool' 
 
 
 
