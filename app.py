@@ -1,3 +1,4 @@
+from email import message
 from dash import Dash, html, dcc, Input,Output
 from hashlib import sha1,sha256
 
@@ -16,13 +17,16 @@ app.layout = html.Div(children=[
 
             html.Br(),
 
-            html.Select(
+            dcc.Dropdown(
                 id = "hash_function",
-                className="select",
-                children = [
-                    html.Option("sha-1"),
-                    html.Option("sha-256"),
-                    html.Option("md5"), 
+                className = "hash_function",
+                clearable = False,
+                value = 'sha-1',
+                options=[
+                    {'label': 'sha-1', 'value': 'sha-1'},
+                    {'label': 'sha-256', 'value': 'sha-256'},
+                    {'label': 'md5', 'value': 'nd5'},
+                    
                 ]
             ),
 
@@ -36,7 +40,9 @@ app.layout = html.Div(children=[
                 className = "textarea",
             ),
             html.Br(),
-            dcc.Input(),
+            dcc.Input(
+                id = "message-digest"
+            ),
             html.Br(),
             
             html.Br(),
@@ -51,21 +57,36 @@ app.layout = html.Div(children=[
 
 
             html.H4('messge2'),
-            dcc.Textarea(),
+            dcc.Textarea(
+                id= 'message-to-check'
+            ),
             html.Br(),
-            dcc.Input(),
+            dcc.Input(
+                id="hashed1"
+            ),
             html.Br(),
             
 
             html.Br(),
 
-            html.Button("hash"),
-            html.Button("copy"),
-            html.Button("clear"),
+            html.Button(
+                id="hash1",
+                n_clicks=0,
+                children=[
+                    "hash"
+                    ]),
+            html.Button(
+                id = 'copy' ,
+                n_clicks=0,
+                children=[
+                    "copy"
+                ]),
+            
+            
             html.Button("check"),
 
             html.Br(),
-            html.P(
+            html.Div(
                 id = "result",
                 className = "result",
                 children = [
@@ -79,14 +100,50 @@ app.layout = html.Div(children=[
 
 
 @app.callback(
-    Output(component_id='result',component_property='children'),
-    Input(component_id='hash_function',component_property='children'),
+    Output(component_id='message-digest',component_property='value'),
+    Input(component_id='hash_function',component_property='value'),
     Input(component_id='initial_message',component_property='value'),
 )
 def hash(fun,msg):
-    print(fun)
-    print(msg)
-    print('------')
+    if msg:
+        if fun == 'sha-1':
+            return sha1(msg.encode('UTF-8')).hexdigest()
+        else:
+            return 'not sha1'
+    else:
+        return ''
+
+
+
+@app.callback(
+    Output(component_id='message-to-check',component_property='value'),
+    Input(component_id='initial_message',component_property='value'),
+    Input(component_id='copy',component_property='n_clicks')
+)
+def copy(msg,click):
+    if click != 0:
+        return msg
+    
+@app.callback(
+    Output(component_id='hashed1',component_property='value'),
+    Input(component_id='message-to-check',component_property='value'),
+    Input(component_id='hash1',component_property='n_clicks'),
+    Input(component_id='hash_function',component_property='value'),
+)
+def hash_2(msg,click,fun):
+    if click != 0:
+        if msg:
+            if fun == 'sha-1':
+                return sha1(msg.encode('UTF-8')).hexdigest()
+            else:
+                return 'not sha1'
+        else:
+            return ''
+
+
+
+
+
 
 
 
