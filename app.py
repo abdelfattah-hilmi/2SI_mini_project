@@ -1,6 +1,6 @@
 from email import message
 from dash import Dash, html, dcc, Input,Output
-from hashlib import sha1,sha256
+from hashlib import md5, sha1,sha256
 
 app = Dash(__name__)
 
@@ -25,7 +25,7 @@ app.layout = html.Div(children=[
                 options=[
                     {'label': 'sha-1', 'value': 'sha-1'},
                     {'label': 'sha-256', 'value': 'sha-256'},
-                    {'label': 'md5', 'value': 'nd5'},
+                    {'label': 'md5', 'value': 'md5'},
                     
                 ]
             ),
@@ -107,9 +107,11 @@ app.layout = html.Div(children=[
 def hash(fun,msg):
     if msg:
         if fun == 'sha-1':
-            return sha1(msg.encode('UTF-8')).hexdigest()
-        else:
-            return 'not sha1'
+            return sha1(msg.encode('UTF-8')).hexdigest() 
+        elif fun == 'sha-256':
+            return sha256(msg.encode('UTF-8')).hexdigest()
+        elif fun == 'md5':
+            return md5(msg.encode('UTF-8')).hexdigest()
     else:
         return ''
 
@@ -134,9 +136,11 @@ def hash_2(msg,click,fun):
     if click != 0:
         if msg:
             if fun == 'sha-1':
-                return sha1(msg.encode('UTF-8')).hexdigest()
-            else:
-                return 'not sha1'
+                return sha1(msg.encode('UTF-8')).hexdigest() 
+            elif fun == 'sha-256':
+                return sha256(msg.encode('UTF-8')).hexdigest()
+            elif fun == 'md5':
+                return md5(msg.encode('UTF-8')).hexdigest()
         else:
             return ''
 
