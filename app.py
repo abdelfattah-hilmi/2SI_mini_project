@@ -1,10 +1,8 @@
 from email import message
 from dash import Dash, html, dcc, Input,Output
-from hashlib import md5, sha1,sha256
+from hashlib import md5, sha1,sha256, sha512
 
 app = Dash(__name__)
-
-
 
 app.layout = html.Div(children=[
     html.Div(
@@ -12,7 +10,7 @@ app.layout = html.Div(children=[
         children = [
             html.H1(
             className = "title",
-            children = ["Intgeration check"]
+            children = ["Test d'integration"]
             ),
 
             html.Br(),
@@ -25,8 +23,8 @@ app.layout = html.Div(children=[
                 options=[
                     {'label': 'sha-1', 'value': 'sha-1'},
                     {'label': 'sha-256', 'value': 'sha-256'},
-                    {'label': 'md5', 'value': 'md5'},
-                    
+                    {'label': 'sha-512', 'value': 'sha-512'},
+                    {'label': 'md5', 'value': 'md5'}, 
                 ]
             ),
 
@@ -34,14 +32,20 @@ app.layout = html.Div(children=[
 
             
 
-            html.H4('messge'),
+            html.Div(
+                className='arealabel',
+                children='Message initial:'
+                ),
             dcc.Textarea(
                 id = "initial_message",
                 className = "textarea",
             ),
+
             html.Br(),
+
             dcc.Input(
-                id = "message-digest"
+                id = "message-digest",
+                className="digest"
             ),
             html.Br(),
             
@@ -56,13 +60,19 @@ app.layout = html.Div(children=[
             html.Br(),
 
 
-            html.H4('messge2'),
+            html.Div(
+                className='arealabel',
+                children='Message a vérifier:'
+                ),
             dcc.Textarea(
-                id= 'message-to-check'
+                id= 'message-to-check',
+                className = "textarea",
+
             ),
             html.Br(),
             dcc.Input(
-                id="hashed1"
+                id="hashed1",
+                className="digest"
             ),
             html.Br(),
             
@@ -71,12 +81,14 @@ app.layout = html.Div(children=[
 
             html.Button(
                 id="hash1",
+                className="Button btn1",
                 n_clicks=0,
                 children=[
                     "hash"
                     ]),
             html.Button(
                 id = 'copy' ,
+                className="Button btn2",
                 n_clicks=0,
                 children=[
                     "copy"
@@ -85,6 +97,7 @@ app.layout = html.Div(children=[
             
             html.Button(
                 id = 'check' ,
+                className="Button btn3",
                 n_clicks=0,
                 children=[
                     "check"
@@ -95,7 +108,7 @@ app.layout = html.Div(children=[
                 id = "result",
                 className = "result",
                 children = [
-                    "placeholder",
+                    "",
                 ]
             ),
         ]
@@ -117,6 +130,8 @@ def hash(fun,msg):
             return sha256(msg.encode('UTF-8')).hexdigest()
         elif fun == 'md5':
             return md5(msg.encode('UTF-8')).hexdigest()
+        elif fun == 'sha-512':
+            return sha512(msg.encode('UTF-8')).hexdigest()
     else:
         return ''
 
@@ -146,22 +161,35 @@ def hash_2(msg,click,fun):
                 return sha256(msg.encode('UTF-8')).hexdigest()
             elif fun == 'md5':
                 return md5(msg.encode('UTF-8')).hexdigest()
+            elif fun == 'sha-512':
+                return sha512(msg.encode('UTF-8')).hexdigest()
         else:
             return ''
+
+
+
+cool_message = html.Div(
+    className="cool",
+    children="✅ Le message n'est pas modifié.",
+)
+not_cool_message = html.Div(
+    className="not_cool",
+    children="❌ Le message est modifié.",
+)
 
 
 @app.callback(
     Output(component_id='result',component_property='children'),
     Input(component_id='hashed1',component_property='value'),
     Input(component_id='message-digest',component_property='value'),
-    Input(component_id='check',component_property="value"),
+    Input(component_id='check',component_property="n_clicks"),
 )
 def check(digest1,digest2,click):
-    if click != 0:
+    if click:
         if digest1 == digest2 :
-            return 'cool'
+            return cool_message
         else :
-            return 'not cool' 
+            return not_cool_message
 
 
 
