@@ -10,7 +10,7 @@ app.layout = html.Div(children=[
         children = [
             html.H1(
             className = "title",
-            children = ["Test d'integration"]
+            children = ["Test d'intgrité"]
             ),
 
             html.Br(),
@@ -84,14 +84,14 @@ app.layout = html.Div(children=[
                 className="Button btn1",
                 n_clicks=0,
                 children=[
-                    "hash"
+                    "hacher"
                     ]),
             html.Button(
                 id = 'copy' ,
                 className="Button btn2",
                 n_clicks=0,
                 children=[
-                    "copy"
+                    "copier"
                 ]),
             
             
@@ -100,7 +100,7 @@ app.layout = html.Div(children=[
                 className="Button btn3",
                 n_clicks=0,
                 children=[
-                    "check"
+                    "valider"
                 ]),
 
             html.Br(),
