@@ -65,6 +65,7 @@ body {
     border-radius: 15px;
     resize: none;
     background-color: rgb(245, 245, 245);
+    font-size: 20px;
 }
 .arealabel{
     font-size: medium;
@@ -84,7 +85,9 @@ body {
 
 .cool{
     color: #4a9404;
+    font-size: larger;
 }
 .not_cool{
     color: #cc3434;
+    font-size: larger;
 }
